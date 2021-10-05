@@ -19,7 +19,6 @@ const main = async () => {
   const alumnesDB = readDB();
 
   if (alumnesDB) {
-    // si hi ha dades, carrégales
     alumnes.carregarAlumnesFromArray(alumnesDB);
   }
 
@@ -30,8 +29,6 @@ const main = async () => {
       case "1":
         const nomAlumne = await nouAlumne("Nom alumne:");
         alumnes.crearAlumne(nomAlumne, 0);
-        // const alumne = new Alumne("Ricard", 10);
-        // console.log(alumne);
         break;
 
       case "2":
