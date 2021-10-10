@@ -22,20 +22,22 @@ class Reservasala {
   }
 
   mostrarSala(reserves) {
+    let arr = [];
+    reserves.forEach((reserva) => {
+      arr.push((reserva.fila - 1).toString() + (reserva.col - 1).toString());
+    });
     console.log("██PANTALLA██".bgWhite.black);
     let cad = "";
     for (let f = 0; f < 6; f++) {
-      for (let c = 0; c < 6; c++) {
-        reserves.forEach((reserva) => {
-          if (reserva.fila - 1 == f && reserva.col - 1 == c) {
-            cad += this.sala[f][c].red + " ";
-          } else {
-            cad += this.sala[f][c].green + " ";
-          }
-        });
-      }
-      console.log(cad + "\n");
       cad = "";
+      for (let c = 0; c < 6; c++) {
+        if (arr.includes(f.toString() + c.toString())) {
+          cad += this.sala[f][c].red + " ";
+        } else {
+          cad += this.sala[f][c].green + " ";
+        }
+      }
+      console.log("\n" + cad);
     }
     console.log(`────┐ ┌────`);
     console.log(`   Entry   `.magenta);

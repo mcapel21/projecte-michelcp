@@ -80,7 +80,7 @@ const posCol = async (message) => {
       message,
       validate(value) {
         if (value.length === 0 || value > 6 || value < 1) {
-          return "Si us plau, introdueix una columna entre 1-6";
+          return "Si us plau, introdueix un seient entre 1-6";
         }
         return true;
       },
@@ -95,7 +95,7 @@ const reservaSelect = async (reserves = []) => {
     const idx = `${i + 1}.`.green;
     return {
       value: reserva.id,
-      name: `${idx}. Reserva amb seient: Fila - ${reserva.fila} Columna - ${reserva.col}`,
+      name: `${idx}. Reserva : Fila - ${reserva.fila} Seient - ${reserva.col}`,
     };
   });
 
