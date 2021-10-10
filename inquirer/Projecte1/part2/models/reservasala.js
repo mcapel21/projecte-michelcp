@@ -12,26 +12,68 @@ class Reservasala {
     abc: 123,
   };
 
-  mostrarSala() {
-    for (let f = 0; f < 6; f++) {
-      for (let c = 0; c < 6; c++) {
-        console.log(sala[f][c]);
-      }
-    }
+  constructor() {
+    this._llista = {};
   }
 
-  crearReserva(fila, columna) {
+  mostrarRecaudacio(reserves) {
+    console.log("Preu d'entrada: 10€".underline.bgMagenta);
+    console.log("Total de recaudació: ".green + reserves.length * 10 + "€");
+  }
+
+  mostrarSala(reserves) {
+    console.log("██PANTALLA██".bgWhite.black);
+    let cad = "";
+    for (let f = 0; f < 6; f++) {
+      for (let c = 0; c < 6; c++) {
+        reserves.forEach((reserva) => {
+          if (reserva.fila - 1 == f && reserva.col - 1 == c) {
+            cad += this.sala[f][c].red + " ";
+          } else {
+            cad += this.sala[f][c].green + " ";
+          }
+        });
+      }
+      console.log(cad + "\n");
+      cad = "";
+    }
+    console.log(`────┐ ┌────`);
+    console.log(`   Entry   `.magenta);
+  }
+
+  get llistatArr() {
+    const llistat = [];
+    Object.keys(this._llista).forEach((key) => {
+      const reserva = this._llista[key];
+      llistat.push(reserva);
+    });
+    return llistat;
+  }
+
+  crearReserva(fila, columna, reserves) {
+    let reservat = false;
     reserves.forEach((reserva) => {
-      if (reserva.fila == fila && reserva.columna == columna) {
-        return true;
+      // console.log(
+      //   "\nfila: " + typeof reserva.fila + " col: " + typeof reserva.col
+      // );
+      if (reserva.fila == fila && reserva.col == columna) {
+        console.log("Ja es reservat!");
+        reservat = true;
       }
     });
-    const reserva = new Reserva(fila, columna);
-    this._llista[reserva.id] = reserva;
+    if (!reservat) {
+      const reserva = new Reserva(fila, columna);
+      this._llista[reserva.id] = reserva;
+    }
   }
   carregarReservesFromArray(reserves = []) {
     reserves.forEach((reserva) => {
       this._llista[reserva.id] = reserva;
     });
   }
+  async eliminarReserva(id) {
+    delete this._llista[id];
+  }
 }
+
+module.exports = Reservasala;

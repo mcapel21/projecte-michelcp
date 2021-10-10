@@ -4,7 +4,7 @@ class Reserva {
   id = "";
   fila = 0;
   col = 0;
-  constructor(nom, estat) {
+  constructor(fila, col) {
     this.id = uuidv4();
     this.fila = fila;
     this.col = col;

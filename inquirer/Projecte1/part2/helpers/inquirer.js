@@ -90,9 +90,50 @@ const posCol = async (message) => {
   return columna;
 };
 
+const reservaSelect = async (reserves = []) => {
+  const choices = reserves.map((reserva, i) => {
+    const idx = `${i + 1}.`.green;
+    return {
+      value: reserva.id,
+      name: `${idx}. Reserva amb seient: Fila - ${reserva.fila} Columna - ${reserva.col}`,
+    };
+  });
+
+  choices.unshift({
+    value: "0",
+    name: "0. ".green + "Cancel·lar",
+  });
+
+  const pregunta = [
+    {
+      type: "list",
+      name: "id",
+      message: "Selecciona reserva",
+      choices,
+    },
+  ];
+
+  const { id } = await inquirer.prompt(pregunta);
+  return id;
+};
+
+const confirmar = async (message) => {
+  const question = [
+    {
+      type: "confirm",
+      name: "ok",
+      message,
+    },
+  ];
+  const { ok } = await inquirer.prompt(question);
+  return ok;
+};
+
 module.exports = {
   inquirerMenu,
   pausa,
   posFila,
   posCol,
+  reservaSelect,
+  confirmar,
 };

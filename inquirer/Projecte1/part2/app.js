@@ -1,15 +1,22 @@
 require("colors");
-const { inquirerMenu, pausa, posFila, posCol } = require("./helpers/inquirer");
+const {
+  inquirerMenu,
+  pausa,
+  posFila,
+  posCol,
+  reservaSelect,
+  confirmar,
+} = require("./helpers/inquirer");
 const { guardarDB, readDB } = require("./helpers/guardarFitxer");
-const reservasala = require("./models/reservasala");
+const Reservasal = require("./models/reservasala");
 const main = async () => {
   let opt = "";
-  //const tasques = new Tasques();
+  const reservasala = new Reservasal();
 
-  //   const tasquesDB = readDB();
-  //   if (tasquesDB) {
-  //     tasques.carregarTasquesFromArray(tasquesDB);
-  //   }
+  const reservesDB = readDB();
+  if (reservesDB) {
+    reservasala.carregarReservesFromArray(reservesDB);
+  }
 
   do {
     opt = await inquirerMenu();
@@ -18,33 +25,37 @@ const main = async () => {
         //Nova reserva
         const fila = await posFila("Fila (1-6): ");
         const columna = await posCol("Columna (1-6): ");
-        if (reservasala.crearReserva(fila, columna)) {
-          //reservasala.crearReserva is not a function
-          console.log(`Aquest seient ja es ocupat!`);
-        }
-        //Consultar si lloc disponible
-        //Si disponible fer reserva, si no informem esta agafat
+        reservasala.crearReserva(fila, columna, reservasala.llistatArr);
         break;
 
       case "2":
         //Mostrar sala
-        reservasala.mostrarSala();
+        reservasala.mostrarSala(reservasala.llistatArr);
         break;
 
       case "3":
         //Mostrar recaudació
+        reservasala.mostrarRecaudacio(reservasala.llistatArr);
         // tasques.llistarTasquesCompletades();
         break;
 
       case "4":
         //Eliminar reserva
-        // tasques.llistarTasquesPendents();
+        const id_elim = await reservaSelect(reservasala.llistatArr);
+        if (id_elim !== 0) {
+          const ok = await confirmar(
+            `Estas segur que vols eliminar la reserva ?`
+          );
+          if (ok) {
+            reservasala.eliminarReserva(id_elim);
+          }
+        }
         break;
 
       default:
         break;
     }
-    //guardarDB(tasques.llistatArr);
+    guardarDB(reservasala.llistatArr);
     await pausa();
   } while (opt !== "0");
 };
