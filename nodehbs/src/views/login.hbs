@@ -1,0 +1,37 @@
+<form action="/login" method="POST" class="form-signin mt-5">
+  <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+  {{#if error}}
+  <div class="alert alert-danger" role="alert">
+  Creedencials incorrectes
+</div>
+{{/if}}
+  <label for="inputName" class="sr-only">Name</label>
+  <input
+    type="text"
+    id="inputName"
+    name="nom"
+    class="form-control"
+    placeholder="Name"
+    required=""
+    autofocus=""
+  />
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input
+    type="password"
+    id="inputPassword"
+    name="password"
+    class="form-control"
+    placeholder="Password"
+    required=""
+  />
+  <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" value="remember-me" />
+      Recorda'm
+    <br>
+    <label>
+      <a href="/register">No tens compte? Registra't.</a>
+  </div>
+  
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Entra</button>
+</form>
