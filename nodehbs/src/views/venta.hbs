@@ -1,0 +1,156 @@
+<main class="flex-shrink-0 mt-4">
+  <div class="container">
+    <div class="bg-light p-5 rounded text-center">
+      <h1>PUJA EL TEU COTXE</h1>
+      <form class="form-horizontal" action="/venta" method="post">
+        <fieldset>
+
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center">
+            <label class="col-md-4 control-label" for="cmarca">Marca</label>
+            <div class="col-md-4">
+              <input
+                id="c_marca"
+                name="cmarca"
+                placeholder="MARCA"
+                class="form-control input-md"
+                required=""
+                type="text"
+              />
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center">
+            <label class="col-md-4 control-label" for="cmodel">Model</label>
+            <div class="col-md-4">
+              <input
+                id="c_model"
+                name="cmodel"
+                placeholder="MODEL"
+                class="form-control input-md"
+                required=""
+                type="text"
+              />
+
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center">
+            <label class="col-md-4 control-label" for="cany">Any</label>
+            <div class="col-md-4">
+              <input
+                id="c_any"
+                name="cany"
+                placeholder="ANY"
+                class="form-control input-md"
+                required=""
+                type="number"
+                min="1900"
+                max="2022"
+              />
+
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center">
+            <label class="col-md-4 control-label" for="ckm">Kilometres</label>
+            <div class="col-md-4">
+              <input
+                id="c_km"
+                name="ckm"
+                placeholder="KILOMETRES"
+                class="form-control input-md"
+                required=""
+                type="number"
+                min="1"
+              />
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center">
+            <label class="col-md-4 control-label" for="ccv">Cv</label>
+            <div class="col-md-4">
+              <input
+                id="c_cv"
+                name="ccv"
+                placeholder="CV"
+                class="form-control input-md"
+                required=""
+                type="number"
+                min="1"
+              />
+            </div>
+          </div>
+
+          <!-- Select Basic -->
+          <div class="form-group d-flex justify-content-center">
+            <label
+              class="col-md-4 control-label"
+              for="ccombustible"
+            >Combustible</label>
+            <div class="col-md-4">
+              <select
+                id="c_combustible"
+                name="ccombustible"
+                class="form-control"
+              >
+                <option value="benzina">Benzina</option>
+                <option value="diesel">Diesel</option>
+                <option value="electric">Elèctric</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Textarea -->
+          <div class="form-group d-flex justify-content-center">
+            <label
+              class="col-md-4 control-label"
+              for="cdescripcio"
+            >Descripció</label>
+            <div class="col-md-4">
+              <textarea
+                class="form-control"
+                id="c_descripcio"
+                name="cdescripcio"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center">
+            <label class="col-md-4 control-label" for="cpreu">Preu</label>
+            <div class="col-md-4">
+              <input
+                id="c_preu"
+                name="cpreu"
+                placeholder="Preu"
+                class="form-control input-md"
+                required=""
+                type="number"
+                min="1"
+              />
+            </div>
+          </div>
+
+          <!-- File Button -->
+          <div class="form-group d-flex justify-content-center">
+            <label class="col-md-4 control-label" for="cfoto">Puja una foto</label>
+            <div class="col-md-4">
+              <input id="c_foto" name="cfoto" class="input-file" type="file" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-success btn-lg btn-block">Ven
+              el meu cotxe!</button>
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</main>

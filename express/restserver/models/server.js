@@ -1,4 +1,5 @@
 const express = require("express");
+const { dbConnection } = require("../database/config");
 
 class Server {
   constructor() {
@@ -8,7 +9,15 @@ class Server {
     //Middlewares
     this.middlewares();
 
+    //connectar a la bd
+    this.conectarDB();
+
     this.routes(); //rutes de l'app
+  }
+
+  async conectarDB() {
+    console.log("Connectant . . .");
+    await dbConnection();
   }
 
   middlewares() {

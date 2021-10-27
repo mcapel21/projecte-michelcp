@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row mt-5">
+    {{#if cotxes}}
+      {{#each cotxes}}
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3"><div
+            class="card"
+            style="width: 18rem;"
+          >
+            <img src="{{foto}}" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title">{{marca}}&nbsp;{{model}}&nbsp;{{any}}</h5>
+              {{#if descripcio}}
+                <p class="card-text">{{descripcio}}</p>
+              {{else}}
+                <p class="card-text">Sense descripció.</p>
+              {{/if}}
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">{{cv}} cv</li>
+              <li class="list-group-item">{{km}} km</li>
+              <li class="list-group-item">Combustible: {{combustible}}</li>
+              <li class="list-group-item">Preu: {{preu}}</li>
+              <li class="list-group-item">Vendedor: {{vendedor}}</li>
+            </ul>
+            <div class="card-body text-center">
+              <form
+                class="form-horizontal"
+                action="/compra?key={{@key}}"
+                method="post"
+              >
+                {{#if esVenut}}
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger"
+                    disabled
+                  >Venut!</button>
+
+                {{else}}
+                  <button
+                    type="submit"
+                    class="btn btn-success btn-lg btn-block"
+                  >Comprar cotxe</button>
+                {{/if}}
+
+              </form>
+
+            </div>
+          </div></div>
+      {{/each}}
+    {{/if}}
+
+  </div>
+</div>

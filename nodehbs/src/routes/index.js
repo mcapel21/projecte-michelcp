@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const admin = require("firebase-admin");
+const url = require("url");
 
 let serviceAccount = require("../../node-firebase-146ed-firebase-adminsdk-njzkm-8f4e6d2b9c.json");
 
@@ -13,23 +14,153 @@ admin.initializeApp({
 const db = admin.database();
 //usuaris
 const users = db.ref("users");
+//cotxes
+const cotxes = db.ref("cotxes");
 
 router.get("/", (req, res) => {
-  //abans de renderitzar es consulta bd
-  //crear un objecte i pasarlo al render
-  res.render("index", { title: "Home", active: { Home: true } });
+  //console.log(req.session);
+  res.render("home", {
+    title: "Home",
+    active: { Home: true },
+    esAdmin: req.session.admin,
+    user: req.session.user,
+  });
 });
 
 router.get("/contacte", (req, res) => {
-  res.render("contacte", { title: "Contacte", active: { Contacte: true } });
+  res.render("contacte", {
+    title: "Contacte",
+    active: { Contacte: true },
+    esAdmin: req.session.admin,
+    user: req.session.user,
+  });
 });
 
 router.get("/register", (req, res) => {
-  res.render("register", { title: "Register", active: { Register: true } });
+  res.render("register", {
+    title: "Register",
+    active: { Register: true },
+    esAdmin: req.session.admin,
+    user: req.session.user,
+  });
+});
+
+router.get("/logout", function (req, res) {
+  req.session.destroy();
+  res.render("login", { title: "Login", active: { Login: true } });
 });
 
 router.get("/login", (req, res) => {
-  res.render("login", { title: "Login", active: { Login: true } });
+  res.render("login", {
+    title: "Login",
+    active: { Login: true },
+    esAdmin: req.session.admin,
+    user: req.session.user,
+  });
+});
+
+let autenticar = function (req, res, next) {
+  if (
+    (req.session && req.session.user && req.session.admin) ||
+    (req.session && req.session.user)
+  )
+    return next();
+  else return res.render("login", { title: "Login", active: { Login: true } });
+};
+
+//compra
+router.get("/compra", autenticar, (req, res) => {
+  let dades;
+  cotxes.on(
+    "value",
+    (snapshot) => {
+      dades = snapshot.val();
+      if (dades) {
+        res.render("compra", {
+          title: "Compra",
+          active: { Compra: true },
+          esAdmin: req.session.admin,
+          user: req.session.user,
+          cotxes: dades,
+        });
+      } else {
+        res.render("compra", {
+          title: "Compra",
+          active: { Compra: true },
+          esAdmin: req.session.admin,
+          user: req.session.user,
+        });
+      }
+    },
+    (errorObject) => {
+      console.log("The read failed: " + errorObject.name);
+    }
+  );
+});
+
+//COTXE - dades
+/**
+ * Marca
+ * Model
+ * Any
+ * Km
+ * Cv
+ * Combustible
+ * Descripcio del vendedor
+ * Preu
+ * Foto (mirar com fer-ho)
+ */
+
+router.post("/compra", autenticar, (req, res) => {
+  //compra un cotxe
+  const queryObject = url.parse(req.url, true).query;
+  let key = queryObject.key;
+
+  cotxes.child(key).update({
+    //el cotxe ha sigut venut
+    esVenut: true,
+  });
+  res.redirect("/compra");
+});
+
+router.post("/venta", autenticar, (req, res) => {
+  let newCar;
+  //Si foto buida, foto per defecte.
+  //express-fileupload TODO
+  if (!req.files) {
+    newCar = {
+      vendedor: req.session.user,
+      marca: req.body.cmarca,
+      model: req.body.cmodel,
+      any: req.body.cany,
+      km: req.body.ckm,
+      cv: req.body.ccv,
+      combustible: req.body.ccombustible,
+      descripcio: req.body.cdescripcio,
+      foto: "assets/img/default-car.png",
+      preu: req.body.cpreu,
+      esVenut: false,
+    };
+    //console.log(newCar);
+    cotxes.push(newCar);
+    res.render("/compra", {
+      title: "Compra",
+      active: { Venta: true },
+      esAdmin: req.session.admin,
+      user: req.session.user,
+    });
+  } else {
+    //mirar si extensió es vàlida
+  }
+});
+
+router.get("/venta", autenticar, (req, res) => {
+  res.render("venta", {
+    title: "Venta",
+    active: { Venta: true },
+    esAdmin: req.session.admin,
+    user: req.session.user,
+  });
 });
 
 router.post("/login", (req, res) => {
@@ -38,32 +169,29 @@ router.post("/login", (req, res) => {
     let nom = req.body.nom;
     let psw = req.body.password;
     let error = true;
-    let adm = false;
-    let user;
+    //let adm = false;
     for (const camp in data) {
       //console.log(data[camp].nom);
       if (data[camp].nom == nom && data[camp].password == psw) {
         if (nom == "admin" && psw == "admin") {
-          adm = true;
+          //adm = true;
+          req.session.admin = true;
+        } else {
+          req.session.admin = false;
         }
-        user = data[camp];
+        req.session.user = data[camp].nom;
+        //user = data[camp];
         error = false;
       }
     }
     if (!error) {
-      if (adm) {
-        res.render("index", {
-          active: { Home: true },
-          adm,
-          user,
-        });
-      } else {
-        res.render("index", {
-          active: { Home: true },
-          user,
-        });
-      }
+      res.render("home", {
+        active: { Home: true },
+        esAdmin: req.session.admin,
+        user: req.session.user,
+      });
     } else {
+      //fallo login
       res.render("login", {
         title: "Login",
         active: { Login: true },
@@ -71,38 +199,6 @@ router.post("/login", (req, res) => {
       });
     }
   });
-  // let nom = req.body.nom;
-  // let psw = req.body.password;
-  // ref.on(
-  //   "value",
-  //   (snapshot) => {
-  //     let user = snapshot.val();
-  //     let esAdmin = 0;
-  //     let error = false;
-  //     if (user.nom == nom && user.password == psw) {
-  //       //crear cookie i comprovar si admin
-  //       if (user.nom == "admin" && user.password == "admin") {
-  //         esAdmin = 1;
-  //       }
-  //       res.render("index", {
-  //         active: { Login: true },
-  //         user,
-  //         esAdmin,
-  //         error,
-  //       });
-  //     } else {
-  //       error = true;
-  //       res.render("login", {
-  //         title: "Login",
-  //         active: { Login: true },
-  //         error,
-  //       });
-  //     }
-  //   },
-  //   (errorObject) => {
-  //     console.log("The read failed: " + errorObject.name);
-  //   }
-  // );
 });
 
 router.post("/register", (req, res) => {
@@ -138,75 +234,14 @@ router.post("/register", (req, res) => {
         password: req.body.password,
       };
       users.push(newUser);
-      let user = newUser;
-      res.render("index", {
+      //creem cookie
+      req.session.user = nom;
+      res.render("home", {
         active: { Home: true },
-        user,
+        user: req.session.user,
       });
     }
   });
-
-  // let pswcheck = req.body.confirm_password;
-  // let crearUser = false;
-  // let infoUser;
-  // ref.on(
-  //   "value",
-  //   (snapshot) => {
-  //     let user = snapshot.val();
-  //     let error = false;
-  //     let error2 = false;
-  //     if (user.nom != nom) {
-  //       crearUser = true; // es pot crear user
-  //     } else if (user.nom == nom && psw != pswcheck) {
-  //       error2 = true;
-  //       infoUser = user;
-  //       res.render("register", {
-  //         title: "Register",
-  //         active: { Register: true },
-  //         error2,
-  //       });
-  //     } else {
-  //       //troba usuari ja creat
-  //       error = true;
-  //       res.render("register", {
-  //         title: "Register",
-  //         active: { Register: true },
-  //         error,
-  //       });
-  //     }
-  //   },
-  //   (errorObject) => {
-  //     console.log("The read failed: " + errorObject.name);
-  //   }
-  // );
-  // if (crearUser) {
-  //   //creem user
-  //   const newUser = {
-  //     nom,
-  //     password,
-  //   };
-  //   ref.push(newUser);
-  //   // const ref_nom = db.ref("/users/nom");
-  //   // const ref_psw = db.ref("/users/password");
-  //   // ref_nom.push(nom);
-  //   // ref_psw.push(psw);
-  //   // ref.push({
-  //   //   nom: nom,
-  //   //   password: psw,
-  //   // });
-  //   // ref
-  //   //   .add({
-  //   //     nom: nom,
-  //   //     password: psw,
-  //   //   })
-  //   //   .catch(function (error) {
-  //   //     console.error("Error adding user: ", error);
-  //   //   });
-  //   res.render("index", {
-  //     active: { Login: true },
-  //     infoUser,
-  //   });
-  // }
 });
 
 module.exports = router;

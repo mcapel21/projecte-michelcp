@@ -10,6 +10,14 @@ app.set("port", process.env.PORT || 3030);
 //li diem al node on es troben els views
 app.set("views", path.join(__dirname, "views"));
 
+//creació session
+app.use(
+  session({
+    secret: "2C44-4D44-WppQ38S",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 //motor de templating (hbs)
 app.engine(
   ".hbs",

@@ -26,8 +26,10 @@
 
     <!-- Custom styles for this template -->
     <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/home.css" rel="stylesheet" />
   </head>
-  <body class="d-flex flex-column h-100">
+  {{!-- <body class="d-flex flex-column h-100"> --}}
+    <body>
 
     {{>header}}
     {{{body}}}
@@ -39,8 +41,5 @@
       crossorigin="anonymous"
     ></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
-    return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
-});</script>
 
   </body></html>
