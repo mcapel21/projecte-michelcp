@@ -1,0 +1,95 @@
+{{!-- <p class="list-group-item mb-0" style="font-weight: bold;">{{user}}</p> --}}
+{{! <div class="row mt-5" style="justify-content: center;"> }}
+<!-- List group -->
+<div class="row mt-5" style="justify-content: center;">
+  <div class="col-5">
+    <div class="list-group" id="list-tab" role="tablist">
+      <p class="list-group-item mb-0" style="font-weight: bold;">{{user}}
+        - Historial compra/venta de SecondCars</p>
+      <a
+        class="list-group-item list-group-item-action"
+        id="list-profile-list"
+        data-toggle="list"
+        href="#list-profile"
+        role="tab"
+        aria-controls="profile"
+      >Compres</a>
+      <a
+        class="list-group-item list-group-item-action"
+        id="list-messages-list"
+        data-toggle="list"
+        href="#list-messages"
+        role="tab"
+        aria-controls="messages"
+      >Ventes</a>
+    </div>
+  </div>
+  <div class="col-5">
+    <div class="tab-content" id="nav-tabContent" style="text-align: center;">
+      <div
+        class="tab-pane fade"
+        id="list-profile"
+        role="tabpanel"
+        aria-labelledby="list-profile-list"
+      >
+        <h3>COMPRES</h3>
+        {{#if compresUser}}
+          <ul class="list-group">
+            {{#each compresUser}}
+              <form
+                class="form-horizontal"
+                action="/cancel-compraventa?key={{idcotxe}}"
+                method="post"
+              >
+                <li class="list-group-item">
+                  {{marca}}
+                  {{model}}
+                  comprat a
+                  {{vendedor}}
+                  per un total de
+                  {{preu}}€
+                  <button type="submit" class="btn btn-danger">Cancelar</button>
+                </li>
+              </form>
+            {{/each}}
+          </ul>
+
+        {{else}}
+          <p>No has comprat cap cotxe!</p>
+        {{/if}}
+      </div>
+      <div
+        class="tab-pane fade"
+        id="list-messages"
+        role="tabpanel"
+        aria-labelledby="list-messages-list"
+      ><h3>VENTES</h3>
+        {{! compresUser,
+        ventesUser, }}
+        {{#if ventesUser}}
+          <ul class="list-group">
+            {{#each ventesUser}}
+              <form
+                class="form-horizontal"
+                action="/cancel-compraventa?key={{idcotxe}}"
+                method="post"
+              >
+                <li class="list-group-item">
+                  {{marca}}
+                  {{model}}
+                  venut a
+                  {{comprador}}
+                  per un total de
+                  {{preu}}€
+                  <button type="submit" class="btn btn-danger">Cancelar</button>
+                </li>
+              </form>
+            {{/each}}
+          </ul>
+        {{else}}
+          <p>No has venut cap cotxe!</p>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>

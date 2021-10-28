@@ -1,5 +1,10 @@
 <div class="container">
   <div class="row mt-5">
+    {{#if error}}
+      <div class="alert alert-danger" role="alert">
+        No pots comprar el teu propi coche!
+      </div>
+    {{/if}}
     {{#if cotxes}}
       {{#each cotxes}}
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3"><div
@@ -23,30 +28,32 @@
               <li class="list-group-item">Vendedor: {{vendedor}}</li>
             </ul>
             <div class="card-body text-center">
-              <form
-                class="form-horizontal"
-                action="/compra?key={{@key}}"
-                method="post"
-              >
-                {{#if esVenut}}
+              {{#if esVenut}}
+                <form class="form-horizontal">
                   <button
                     type="button"
                     class="btn btn-outline-danger"
                     disabled
                   >Venut!</button>
-
-                {{else}}
+                </form>
+              {{else}}
+                <form
+                  class="form-horizontal"
+                  action="/compra?key={{@key}}"
+                  method="post"
+                >
                   <button
                     type="submit"
                     class="btn btn-success btn-lg btn-block"
                   >Comprar cotxe</button>
-                {{/if}}
-
-              </form>
+                </form>
+              {{/if}}
 
             </div>
           </div></div>
       {{/each}}
+    {{else}}
+      <h2>No hi han cotxes a la venta!</h2>
     {{/if}}
 
   </div>

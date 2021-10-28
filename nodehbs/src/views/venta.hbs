@@ -1,8 +1,19 @@
 <main class="flex-shrink-0 mt-4">
   <div class="container">
     <div class="bg-light p-5 rounded text-center">
+      {{#if venut}}
+        <div class="alert alert-success" role="alert">
+          Coche pujat a la venta! Vols veure els coches a la venta?
+          <a href="/compra" class="link-success">Mercat de cotxes</a>
+        </div>
+      {{/if}}
       <h1>PUJA EL TEU COTXE</h1>
-      <form class="form-horizontal" action="/venta" method="post">
+      <form
+        class="form-horizontal"
+        action="/venta"
+        method="post"
+        enctype="multipart/form-data"
+      >
         <fieldset>
 
           <!-- Text input-->
@@ -138,13 +149,13 @@
 
           <!-- File Button -->
           <div class="form-group d-flex justify-content-center">
-            <label class="col-md-4 control-label" for="cfoto">Puja una foto</label>
+            <label class="col-md-4 control-label">Puja una foto</label>
             <div class="col-md-4">
-              <input id="c_foto" name="cfoto" class="input-file" type="file" />
+              <input id="c_foto" name="cfoto" type="file" />
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group mt-5">
             <button type="submit" class="btn btn-success btn-lg btn-block">Ven
               el meu cotxe!</button>
           </div>

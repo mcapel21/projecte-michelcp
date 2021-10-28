@@ -2,13 +2,26 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require("path");
 const session = require("express-session");
-
+const cors = require("cors");
+const fileUpload = require("express-fileupload");
 const app = express();
 //settings
 app.set("port", process.env.PORT || 3030);
 
 //li diem al node on es troben els views
 app.set("views", path.join(__dirname, "views"));
+
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: {
+      fileSize: 1024 * 1024, // 1 MB
+    },
+    abortOnLimit: true,
+  })
+);
+
+app.use(cors());
 
 //creació session
 app.use(
