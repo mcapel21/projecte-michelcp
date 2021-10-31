@@ -6,6 +6,7 @@ const admin = require("firebase-admin");
 const path = require("path");
 const url = require("url");
 const { v4: uuid_v4 } = require("uuid");
+const nodemailer = require("nodemailer");
 
 let serviceAccount = require("../../node-firebase-146ed-firebase-adminsdk-njzkm-8f4e6d2b9c.json");
 
@@ -14,6 +15,15 @@ admin.initializeApp({
   databaseURL:
     "https://node-firebase-146ed-default-rtdb.europe-west1.firebasedatabase.app/",
 });
+
+let autenticar = function (req, res, next) {
+  if (
+    (req.session && req.session.user && req.session.admin) ||
+    (req.session && req.session.user)
+  )
+    return next();
+  else return res.render("login", { title: "Login", active: { Login: true } });
+};
 
 const db = admin.database();
 //usuaris
@@ -33,12 +43,47 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/contacte", (req, res) => {
+router.get("/contacte", autenticar, (req, res) => {
   res.render("contacte", {
     title: "Contacte",
     active: { Contacte: true },
     esAdmin: req.session.admin,
     user: req.session.user,
+  });
+});
+
+router.post("/contacte", autenticar, (req, res) => {
+  let missatge = req.body.message;
+  let nom = req.body.name;
+  let email = req.body.email;
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "info.secondcars33@gmail.com",
+      pass: "insdanielblanxart321",
+    },
+  });
+
+  const mailOptions = {
+    to: email + ",info.secondcars33@gmail.com",
+    subject: nom,
+    text: "Dubte: " + missatge,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      let success = true;
+      console.log("Email sent: " + info.response);
+      res.render("contacte", {
+        title: "Contacte",
+        active: { Contacte: true },
+        esAdmin: req.session.admin,
+        user: req.session.user,
+        success,
+      });
+    }
   });
 });
 
@@ -65,24 +110,56 @@ router.get("/login", (req, res) => {
   });
 });
 
-let autenticar = function (req, res, next) {
-  if (
-    (req.session && req.session.user && req.session.admin) ||
-    (req.session && req.session.user)
-  )
-    return next();
-  else return res.render("login", { title: "Login", active: { Login: true } });
-};
-
 //admin_dashboard
-
 router.get("/admin_dashboard", autenticar, (req, res) => {
-  res.render("admin_dashboard", {
-    title: "admin_dashboard",
-    esAdmin: req.session.admin,
-    user: req.session.user,
-  });
+  let data; //users
+  let c_dades; //cotxes
+  let comp_dades; //compres
+  let totalUsers, totalCotxes, totalCompres;
+  users.once(
+    "value",
+    (snapshot) => {
+      data = snapshot.val();
+      totalUsers = snapshot.numChildren();
+      //Cotxes registrats a la venta
+      cotxes.once(
+        "value",
+        (snapshot) => {
+          c_dades = snapshot.val();
+          totalCotxes = snapshot.numChildren();
+          compres.once(
+            "value",
+            (snapshot) => {
+              comp_dades = snapshot.val();
+              totalCompres = snapshot.numChildren();
+              res.render("admin_dashboard", {
+                title: "admin_dashboard",
+                esAdmin: req.session.admin,
+                user: req.session.user,
+                totalUsers,
+                totalCotxes,
+                totalCompres,
+                users: data,
+                cotxes: c_dades,
+                compres: comp_dades,
+              });
+            },
+            (errorObject) => {
+              console.log("The read failed: " + errorObject.name);
+            }
+          );
+        },
+        (errorObject) => {
+          console.log("The read failed: " + errorObject.name);
+        }
+      );
+    },
+    (errorObject) => {
+      console.log("The read failed: " + errorObject.name);
+    }
+  );
 });
+
 //profile user
 router.get("/profile", autenticar, (req, res) => {
   let data;
@@ -118,6 +195,29 @@ router.get("/profile", autenticar, (req, res) => {
   );
 });
 
+//eliminar cotxe (admin)
+router.post("/elim-cotxe", autenticar, (req, res) => {
+  const queryObject = url.parse(req.url, true).query;
+  let id = queryObject.key;
+  if (esAdmin) {
+    cotxes
+      .child(id)
+      .remove()
+      .then(() => {
+        res.render("admin_dashboard", {
+          title: "Admin",
+          active: { Venta: true },
+          esAdmin: req.session.admin,
+          user: req.session.user,
+        });
+      })
+      .catch(function (error) {
+        console.log("Remove failed: " + error.message);
+      });
+  } else {
+    res.redirect("/");
+  }
+});
 //cancelar compra i venta
 router.post("/cancel-compraventa", autenticar, (req, res) => {
   const queryObject = url.parse(req.url, true).query;
@@ -141,12 +241,16 @@ router.post("/cancel-compraventa", autenticar, (req, res) => {
                   esVenut: false,
                 })
                 .then(() => {
-                  res.render("profile", {
-                    title: "Profile",
-                    active: { Venta: true },
-                    esAdmin: req.session.admin,
-                    user: req.session.user,
-                  });
+                  if (req.session.admin) {
+                    res.redirect("/admin_dashboard");
+                  } else {
+                    res.render("profile", {
+                      title: "Profile",
+                      active: { Venta: true },
+                      esAdmin: req.session.admin,
+                      user: req.session.user,
+                    });
+                  }
                 })
                 .catch(function (error) {
                   console.log("Update failed: " + error.message);
@@ -162,23 +266,6 @@ router.post("/cancel-compraventa", autenticar, (req, res) => {
       console.log("The read failed: " + errorObject.name);
     }
   );
-
-  // cotxes
-  //       .child(key)
-  //       .update({
-  //         esVenut: false,
-  //       })
-  //       .then(() => {
-  //         res.render("profile", {
-  //           title: "Profile",
-  //           active: { Venta: true },
-  //           esAdmin: req.session.admin,
-  //           user: req.session.user,
-  //         });
-  //       })
-  //       .catch(function (error) {
-  //         console.log("Update failed: " + error.message);
-  //       });
 });
 
 //compra
@@ -253,14 +340,15 @@ router.post("/compra", autenticar, (req, res) => {
               preu: dades[key].preu,
             };
             compres.push(novaCompra);
-            res.render("compra", {
-              title: "Compra",
-              active: { Venta: true },
-              esAdmin: req.session.admin,
-              user: req.session.user,
-              cotxes: dades,
-              error,
-            });
+            res.redirect("/compra");
+            // res.render("compra", {
+            //   title: "Compra",
+            //   active: { Compra: true },
+            //   esAdmin: req.session.admin,
+            //   user: req.session.user,
+            //   cotxes: dades,
+            //   error,
+            // });
           })
           .catch(function (error) {
             console.log("Update failed: " + error.message);

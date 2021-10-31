@@ -1,13 +1,69 @@
 <div class="container">
   <div class="d-flex justify-content-center flex-column">
     <div>
-      <h2>Usuaris registrats: </h2>
+      <h2>Usuaris registrats: {{totalUsers}}</h2>
+      {{#if users}}
+      <a class="btn btn-outline-dark" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Veure usuaris
+  </a>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body" style="width: 30%;">
+      <ul class="list-group d-flex">
+          {{#each users}}
+            <li class="list-group-item">Usuari - {{nom}}</li>
+          {{/each}}
+        </ul>
+    </div>
+  </div>
+      
+      {{else}}
+      <ul class="list-group"></ul>
+        <li class="list-group-item list-group-item-warning" style="text-align: center;
+    width: 30%;">No hi han usuaris registrats a la BD</li>
+      </ul>
+      {{/if}}
     </div>
     <div>
-      <h2>COTXES</h2>
+      <h2>Cotxes: {{totalCotxes}}</h2>
+      {{#if cotxes}}
+      <ul class="list-group">
+        {{#each cotxes}}
+        <form
+                class="form-horizontal d-flex"
+                action="/elim-cotxe?key={{@key}}"
+                method="post"
+              >
+          <li class="list-group-item">{{marca}} {{model}} {{any}}, {{cv}}cv - {{km}}km, Vendedor: {{vendedor}}&nbsp;&nbsp;<button type="submit" class="btn btn-danger">Eliminar</button></li>
+        </form>
+        {{/each}}
+      </ul>
+      {{else}}
+      <ul class="list-group"></ul>
+        <li class="list-group-item list-group-item-warning" style="text-align: center;
+    width: 30%;">No hi han cotxes registrats a la venta</li>
+      </ul>
+      {{/if}}    
     </div>
     <div>
-      <h2>MOVIMENTS (VENTA-COMPRA)</h2>
+      <h2>Compres Realitzades: {{totalCompres}}</h2>
+      {{#if compres}}
+      <ul class="list-group">
+        {{#each compres}}
+        <form
+                class="form-horizontal d-flex"
+                action="/cancel-compraventa?key={{idcotxe}}"
+                method="post"
+              >
+          <li class="list-group-item">Operació de venta: Comprador - {{comprador}}, Vendedor - {{vendedor}}, Cotxe - {{marca}} {{model}} per un preu de {{preu}}&nbsp;&nbsp; <button type="submit" class="btn btn-danger">Eliminar</button></li>
+        </form>
+        {{/each}}
+      </ul>
+      {{else}}
+      <ul class="list-group"></ul>
+        <li class="list-group-item list-group-item-warning" style="text-align: center;
+    width: 30%;">No hi han operacions de compres</li>
+      </ul>
+      {{/if}}
     </div>
 
   </div>

@@ -16,6 +16,7 @@
     "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
     "firebase-admin": "^9.12.0",
+    "nodemailer": "^6.7.0",
     "sweetalert2": "^11.1.7",
     "uuidv4": "^6.2.12"
   }
