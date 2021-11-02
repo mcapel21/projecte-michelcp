@@ -351,3 +351,17 @@ label.error {
 .card img {
   height: 178px;
 }
+
+.posimg1 {
+  position: absolute;
+  bottom: -175px;
+  height: 495px;
+  left: -460px;
+}
+
+.posimg2 {
+  position: absolute;
+  bottom: -241px;
+  height: 495px;
+  right: -550;
+}

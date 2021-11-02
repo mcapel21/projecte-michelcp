@@ -242,7 +242,6 @@ router.post("/cancel-compraventa", autenticar, (req, res) => {
   const queryObject = url.parse(req.url, true).query;
   let id = queryObject.key;
   let data;
-  let trobat;
   compres.once(
     "value",
     (snapshot) => {
