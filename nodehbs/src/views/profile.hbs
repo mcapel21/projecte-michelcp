@@ -1,10 +1,15 @@
 {{!-- <p class="list-group-item mb-0" style="font-weight: bold;">{{user}}</p> --}}
 {{! <div class="row mt-5" style="justify-content: center;"> }}
 <!-- List group -->
-<div class="row mt-5" style="justify-content: center;">
+<div
+  class="row mt-5 d-flex flex-column align-items-center justify-content-center"
+>
   <div class="col-5">
-    <div class="list-group" id="list-tab" role="tablist">
-      <p class="list-group-item mb-0" style="font-weight: bold;">{{user}}
+    <div class="list-group borderst" id="list-tab" role="tablist">
+      <p
+        class="list-group-item mb-0 text-center"
+        style="font-weight: bold; color: #8c8c8c;"
+      >{{user}}
         - Historial compra/venta de SecondCars</p>
       <a
         class="list-group-item list-group-item-action"
@@ -24,15 +29,15 @@
       >Ventes</a>
     </div>
   </div>
-  <div class="col-5">
+  <div class="col-5 mt-5">
     <div class="tab-content" id="nav-tabContent" style="text-align: center;">
       <div
-        class="tab-pane fade"
+        class="tab-pane fade borderst2"
         id="list-profile"
         role="tabpanel"
         aria-labelledby="list-profile-list"
       >
-        <h3>COMPRES</h3>
+        <h3 style="text-decoration: underline;">COMPRES</h3>
         {{#if compresUser}}
           <ul class="list-group">
             {{#each compresUser}}
@@ -41,7 +46,7 @@
                 action="/cancel-compraventa?key={{idcotxe}}"
                 method="post"
               >
-                <li class="list-group-item">
+                <li class="list-group-item flexed">
                   {{marca}}
                   {{model}}
                   comprat a
@@ -59,11 +64,11 @@
         {{/if}}
       </div>
       <div
-        class="tab-pane fade"
+        class="tab-pane fade borderst2"
         id="list-messages"
         role="tabpanel"
         aria-labelledby="list-messages-list"
-      ><h3>VENTES</h3>
+      ><h3 style="text-decoration: underline;">VENTES</h3>
         {{! compresUser,
         ventesUser, }}
         {{#if ventesUser}}
@@ -74,7 +79,7 @@
                 action="/cancel-compraventa?key={{idcotxe}}"
                 method="post"
               >
-                <li class="list-group-item">
+                <li class="list-group-item flexed">
                   {{marca}}
                   {{model}}
                   venut a

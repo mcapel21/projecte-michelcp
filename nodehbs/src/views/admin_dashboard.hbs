@@ -1,13 +1,14 @@
-<div class="container">
-  <div class="d-flex justify-content-center flex-column">
-    <div>
+<div class="container" style="margin-top: 35px;">
+  <div class="row">
+      <div class="col-2 text-center">
+        <div>
       <h2>Usuaris registrats: {{totalUsers}}</h2>
       {{#if users}}
       <a class="btn btn-outline-dark" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     Veure usuaris
   </a>
   <div class="collapse" id="collapseExample">
-    <div class="card card-body" style="width: 30%;">
+    <div class="card card-body">
       <ul class="list-group d-flex">
           {{#each users}}
             <li class="list-group-item">Usuari - {{nom}}</li>
@@ -18,12 +19,13 @@
       
       {{else}}
       <ul class="list-group"></ul>
-        <li class="list-group-item list-group-item-warning" style="text-align: center;
-    width: 30%;">No hi han usuaris registrats a la BD</li>
+        <li class="list-group-item list-group-item-warning" style="text-align: center;">No hi han usuaris registrats a la BD</li>
       </ul>
       {{/if}}
-    </div>
-    <div>
+    </div> {{!-- USUARIS --}}
+      </div>
+      <div class="col-5">    
+        <div>
       <h2>Cotxes: {{totalCotxes}}</h2>
       {{#if cotxes}}
       <ul class="list-group">
@@ -40,11 +42,12 @@
       {{else}}
       <ul class="list-group"></ul>
         <li class="list-group-item list-group-item-warning" style="text-align: center;
-    width: 30%;">No hi han cotxes registrats a la venta</li>
+    ">No hi han cotxes registrats a la venta</li>
       </ul>
       {{/if}}    
-    </div>
-    <div>
+    </div>{{!-- COTXES --}}</div>
+      <div class="col-5">
+            <div>
       <h2>Compres Realitzades: {{totalCompres}}</h2>
       {{#if compres}}
       <ul class="list-group">
@@ -60,11 +63,10 @@
       </ul>
       {{else}}
       <ul class="list-group"></ul>
-        <li class="list-group-item list-group-item-warning" style="text-align: center;
-    width: 30%;">No hi han operacions de compres</li>
+        <li class="list-group-item list-group-item-warning" style="text-align: center;">No hi han operacions de compres</li>
       </ul>
       {{/if}}
+    </div>{{!-- COMPRES --}}
+      </div>
     </div>
-
-  </div>
 </div>

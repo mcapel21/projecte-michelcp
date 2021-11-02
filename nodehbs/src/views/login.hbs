@@ -1,5 +1,5 @@
-<form action="/login" method="POST" class="form-signin mt-5">
-  <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+<form action="/login" method="POST" class="form-signin mt-5 borderst2">
+  <h1 class="h3 mb-3" style="color: #6e6666; font-weight: 400;">Login</h1>
   {{#if error}}
   <div class="alert alert-danger" role="alert">
   Creedencials incorrectes
@@ -33,5 +33,6 @@
       <a href="/register">No tens compte? Registra't.</a>
   </div>
   
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Entra</button>
+  <button style="background-color: #6c757d;
+    color: white;" class="btn btn-lg btn-outline-secondary btn-block" type="submit">Entra</button>
 </form>

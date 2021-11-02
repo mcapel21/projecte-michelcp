@@ -1,0 +1,141 @@
+<main class="flex-shrink-0 mt-4">
+  <script src="assets/js/script.js"></script>
+  <div class="container d-flex justify-content-center">
+    <div
+      class="bg-light p-5 rounded text-center d-flex justify-content-center borderst"
+      style="width: 60%;"
+    >
+      {{!-- {{#if venut}}
+        <div class="alert alert-success" role="alert">
+          Coche pujat a la venta! Vols veure els coches a la venta?
+          <a href="/compra" class="link-success">Mercat de cotxes</a>
+        </div>
+      {{/if}} --}}
+
+      <form
+        class="form-horizontal financiarform"
+        action="/financiar"
+        method="post"
+        enctype="multipart/form-data"
+        id="form_prestec"
+      >
+        <h3
+          style="color: #64696c; font-weight: bold;text-decoration: underline; margin-bottom: 30px;"
+        >Simulador de prèstec</h3>
+        <fieldset>
+
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center mb-3 mt-3">
+            <label class="col-md-4 control-label" for="cantt">Cantitat (€)</label>
+            <div class="col-md-4">
+              <input
+                id="cantitat"
+                name="cantt"
+                placeholder="10000-50000.."
+                class="form-control input-md"
+                required=""
+                type="number"
+                value="20000"
+                min="10000"
+                max="50000"
+              />
+            </div>
+          </div>
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center mb-3 mt-3">
+            <label class="col-md-4 control-label" for="bonif">Bonificació de
+              SecondCars</label>
+            <div class="col-md-4">
+              <p id="bonif" style="font-weight: bold;">750€</p>
+            </div>
+          </div>
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center mb-3 mt-3">
+            <label class="col-md-4 control-label" for="mmesos">Quotes</label>
+            <div class="col-md-4">
+              <select id="mmesos" name="mesos" class="form-control">
+                <option value="36">36 Mesos</option>
+                <option value="48">48 Mesos</option>
+                <option value="60">60 Mesos</option>
+                <option selected value="72">72 Mesos</option>
+                <option value="84">84 Mesos</option>
+              </select>
+            </div>
+          </div>
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center mb-3 mt-3">
+            <label class="col-md-4 control-label" for="entr">Entrada inicial (€)</label>
+            <div class="col-md-4">
+              <input
+                id="entrada"
+                name="entr"
+                placeholder="5000.."
+                class="form-control input-md"
+                required=""
+                type="number"
+                value="5000"
+                min="5000"
+                max="44000"
+              />
+            </div>
+          </div>
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center mb-3 mt-3">
+            <label class="col-md-4 control-label" for="bonif">T.I.N</label>
+            <div class="col-md-4">
+              <p id="tin" style="font-weight: bold;">8,95 %</p>
+            </div>
+          </div>
+          <!-- Text input-->
+          <div class="form-group d-flex justify-content-center mb-3 mt-3">
+            <label class="col-md-4 control-label" for="bonif">Total contat</label>
+            <div class="col-md-4">
+              <span id="total_contat" style="font-weight: bold;">-</span>
+            </div>
+          </div>
+          <!-- Text input-->
+          <div
+            class="form-group d-flex justify-content-center flex-column mb-3 mt-3"
+          >
+            <div class="col-md-12">
+
+              <p><span id="cant_quotes" style="font-weight: bold;">-</span>
+                quotes de
+                <span id="quotes_res" style="font-weight: bold;">-</span></p>
+            </div>
+            <div class="col-md-12">
+
+              <p>Import total del crèdit:
+                <span id="total_credit" style="font-weight: bold;">-</span></p>
+            </div>
+            <div class="col-md-12">
+
+              <p>Import total adeudat:
+                <span
+                  id="total_credit_interes"
+                  style="font-weight: bold;"
+                >-</span></p>
+            </div>
+          </div>
+          <div class="form-group d-flex justify-content-center mb-3 mt-3">
+            <div class="col-md-4">
+              <button
+                id="calcula"
+                type="submit"
+                class="btn btn-outline-secondary"
+              >Calcula prèstec</button>
+            </div>
+            <div class="col-md-4">
+              <button
+                id="neteja"
+                type="submit"
+                class="btn btn-outline-danger"
+              >Neteja</button>
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</main>

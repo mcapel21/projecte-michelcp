@@ -36,13 +36,13 @@
         </ul>
           {{#if user}}
           <p style="color: rgba(255,255,255,.55); margin-right: 10px" class="mb-0">Benvolgut/da, <p class="mb-0" style="color: azure; margin-right: 10px">{{user}}</p></p>
-          <button class="btn btn-outline-secondary" aria-current="page"><a style="color: rgba(255,255,255,.55);" class="nav-link {{#if active.Profile}}active{{/if}}" aria-current="page" href="/profile">Perfil</a></button>
-          <button class="btn btn-outline-secondary" aria-current="page"><a style="color: rgba(255,255,255,.55);" class="nav-link {{#if active.Login}}active{{/if}}" aria-current="page" href="/logout">Logout</a></button>
+          <button class="btn btn-outline-secondary pt-0 pb-0" style="margin-right: 10px" aria-current="page"><a style="color: rgba(255,255,255,.55);" class="nav-link {{#if active.Profile}}active{{/if}}" aria-current="page" href="/profile">Perfil</a></button>
+          <button class="btn btn-outline-secondary pt-0 pb-0" style="margin-right: 10px" aria-current="page"><a style="color: rgba(255,255,255,.55);" class="nav-link {{#if active.Login}}active{{/if}}" aria-current="page" href="/logout">Logout</a></button>
            {{else}}
-           <button class="btn btn-outline-secondary" aria-current="page"><a style="color: rgba(255,255,255,.55);" class="nav-link {{#if active.Login}}active{{/if}}" aria-current="page" href="/login">Login</a></button>
+           <button class="btn btn-outline-secondary pt-0 pb-0" style="margin-right: 10px" aria-current="page"><a style="color: rgba(255,255,255,.55);" class="nav-link {{#if active.Login}}active{{/if}}" aria-current="page" href="/login">Login</a></button>
            {{/if}}
            {{#if esAdmin}}
-          <button class="btn btn-outline-secondary" aria-current="page"><a style="color: rgba(255,255,255,.55);" class="nav-link {{#if active.Admin_dashboard}}active{{/if}}" aria-current="page" href="/admin_dashboard">Administrar</a></button>
+          <button class="btn btn-outline-secondary pt-0 pb-0" aria-current="page"><a style="color: rgba(255,255,255,.55);" class="nav-link {{#if active.Admin_dashboard}}active{{/if}}" aria-current="page" href="/admin_dashboard">Administrar</a></button>
            {{/if}}
       </div>
     </div>

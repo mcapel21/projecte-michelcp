@@ -110,6 +110,25 @@ router.get("/login", (req, res) => {
   });
 });
 
+//simulador financiament
+router.get("/financiar", (req, res) => {
+  res.render("financiar", {
+    title: "Financia amb nosaltres !",
+    active: { Financiar: true },
+    esAdmin: req.session.admin,
+    user: req.session.user,
+  });
+});
+
+router.post("/financiar", (req, res) => {
+  res.render("financiar", {
+    title: "Financia amb nosaltres !",
+    active: { Financiar: true },
+    esAdmin: req.session.admin,
+    user: req.session.user,
+  });
+});
+
 //admin_dashboard
 router.get("/admin_dashboard", autenticar, (req, res) => {
   let data; //users
@@ -223,14 +242,16 @@ router.post("/cancel-compraventa", autenticar, (req, res) => {
   const queryObject = url.parse(req.url, true).query;
   let id = queryObject.key;
   let data;
+  let trobat;
   compres.once(
     "value",
     (snapshot) => {
       data = snapshot.val();
       for (const camp in data) {
-        if (data[camp].idcotxe == id) {
+        if (data[camp].idcotxe.includes(id)) {
           let idd = Object.keys(data);
           let idelim = idd.toString();
+          //console.log("idd " + idd + " idelim " + idelim);
           compres
             .child(idelim)
             .remove()
