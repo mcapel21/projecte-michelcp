@@ -47,22 +47,34 @@ const updateUsuaris = async (req, res = response) => {
       },
     }
   );
-  const usuaris = await Usuari.find();
-  res.json({
-    usuaris,
-  });
+
+  if (usuari.matchedCount != 0) {
+    const usuaris = await Usuari.find();
+    res.json({
+      usuaris,
+    });
+  } else {
+    const Error = `No s'ha pogut actualitzar usuari: ${req.params.correu}`;
+    res.json({
+      Error,
+    });
+  }
 };
 
 //https://docs.mongodb.com/manual/tutorial/query-documents/
-const deleteUsuaris = async (req, res = response) => {
-  const usuari = await Usuari.deleteOne({
-    usuaris: { correu: req.params.correu },
-  });
-
-  const usuaris = await Usuari.find();
-  res.json({
-    usuaris,
-  });
+const deleteUsuaris = async (req, res = response, next) => {
+  const usuari = await Usuari.deleteOne({ correu: req.params.correu });
+  if (usuari.deletedCount != 0) {
+    const usuaris = await Usuari.find();
+    res.json({
+      usuaris,
+    });
+  } else {
+    const Error = `No s'ha pogut eliminar usuari: ${req.params.correu}`;
+    res.json({
+      Error,
+    });
+  }
 };
 
 module.exports = {

@@ -48,22 +48,33 @@ const updateClients = async (req, res = response) => {
       },
     }
   );
-  const clients = await Client.find();
-  res.json({
-    clients,
-  });
+  if (client.matchedCount != 0) {
+    const clients = await Client.find();
+    res.json({
+      clients,
+    });
+  } else {
+    const Error = `No s'ha pogut actualitzar client: ${req.params.correu}`;
+    res.json({
+      Error,
+    });
+  }
 };
 
 //https://docs.mongodb.com/manual/tutorial/query-documents/
 const deleteClients = async (req, res = response) => {
-  const client = await Client.deleteOne({
-    clients: { correu: req.params.correu },
-  });
-
-  const clients = await Client.find();
-  res.json({
-    clients,
-  });
+  const client = await Client.deleteOne({ correu: req.params.correu });
+  if (client.deletedCount != 0) {
+    const clients = await Client.find();
+    res.json({
+      clients,
+    });
+  } else {
+    const Error = `No s'ha pogut eliminar client: ${req.params.correu}`;
+    res.json({
+      Error,
+    });
+  }
 };
 
 module.exports = {
