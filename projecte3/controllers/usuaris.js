@@ -47,7 +47,6 @@ const updateUsuaris = async (req, res = response) => {
       },
     }
   );
-
   if (usuari.matchedCount != 0) {
     const usuaris = await Usuari.find();
     res.json({
@@ -62,7 +61,7 @@ const updateUsuaris = async (req, res = response) => {
 };
 
 //https://docs.mongodb.com/manual/tutorial/query-documents/
-const deleteUsuaris = async (req, res = response, next) => {
+const deleteUsuaris = async (req, res = response) => {
   const usuari = await Usuari.deleteOne({ correu: req.params.correu });
   if (usuari.deletedCount != 0) {
     const usuaris = await Usuari.find();

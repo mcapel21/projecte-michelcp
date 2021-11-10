@@ -42,27 +42,8 @@ router.post(
   usuarisPost
 );
 // router.put /:id //update d'un determinat usuari
-router.put(
-  "/usuaris/:correu",
-  // [
-  //   check("correu").custom(emailExisteix),
-  //   check("nom", "El nom és obligatori").not().isEmpty(),
-  //   check("password", "El password ha de tenir més de 6 caràcters").isLength({
-  //     min: 6,
-  //   }),
-  //   validarCamps,
-  // ],
-  updateUsuaris
-);
+router.put("/usuaris/:correu", updateUsuaris);
 // router.delete /:id //eliminar un usuari determinat
-router.delete(
-  "/usuaris/:correu",
-  // [
-  //   check(":correu", "El correu no és vàlid").isEmail(),
-  //   check(":correu").custom(emailExisteix),
-  //   validarCamps,
-  // ],
-  deleteUsuaris
-);
+router.delete("/usuaris/:correu", deleteUsuaris);
 
 module.exports = router;
